@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init
+data:
+  init.sql: |
+    CREATE DATABASE amazon_ecommerce_order;
+    CREATE DATABASE amazon_ecommerce_inventory;
+    CREATE DATABASE amazon_ecommerce_payment;
