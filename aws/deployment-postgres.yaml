@@ -35,6 +35,16 @@ spec:
               value: postgres
             - name: POSTGRES_PASSWORD
               value: postgres
+
+          # 🔥 CONTROL DE RECURSOS
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+            limits:
+              memory: "256Mi"
+              cpu: "200m"
+
           volumeMounts:
             - mountPath: /var/lib/postgresql/data
               name: postgres-storage
