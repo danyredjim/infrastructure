@@ -36,17 +36,12 @@ spec:
             - name: POSTGRES_PASSWORD
               value: postgres
           volumeMounts:
-            - name: postgres-storage
-              mountPath: /var/lib/postgresql/data
-            - name: postgres-init
-              mountPath: /docker-entrypoint-initdb.d
+            - mountPath: /var/lib/postgresql/data
+              name: postgres-storage
       volumes:
         - name: postgres-storage
           persistentVolumeClaim:
             claimName: postgres-pvc
-        - name: postgres-init
-          configMap:
-            name: postgres-init
 ---
 apiVersion: v1
 kind: Service
