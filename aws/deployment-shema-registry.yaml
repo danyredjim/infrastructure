@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: schema-registry
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: schema-registry
+  template:
+    metadata:
+      labels:
+        app: schema-registry
+    spec:
+      containers:
+        - name: schema-registry
+          image: apicurio/apicurio-registry-mem:2.4.2.Final
+          ports:
+            - containerPort: 8080
+          env:
+            - name: REGISTRY_KAFKASTORE_BOOTSTRAP_SERVERS
+              value: kafka:9092
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "100m"
+            limits:
+              memory: "512Mi"
+              cpu: "300m"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: schema-registry
+spec:
+  selector:
+    app: schema-registry
+  ports:
+    - port: 8081
+      targetPort: 8080
