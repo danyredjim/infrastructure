@@ -12,10 +12,16 @@ spec:
       labels:
         app: kafka
     spec:
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
+
       containers:
         - name: redpanda
           image: docker.io/redpandadata/redpanda:v23.2.15
           imagePullPolicy: Always
+
           ports:
             - containerPort: 9092
 
@@ -26,7 +32,7 @@ spec:
             - --smp
             - "1"
             - --memory
-            - "512M"
+            - "256M"
             - --reserve-memory
             - "0M"
             - --node-id
@@ -39,11 +45,24 @@ spec:
 
           resources:
             requests:
-              memory: "256Mi"
+              memory: "128Mi"
               cpu: "100m"
             limits:
-              memory: "512Mi"
+              memory: "256Mi"
               cpu: "300m"
+
+          readinessProbe:
+            tcpSocket:
+              port: 9092
+            initialDelaySeconds: 20
+            periodSeconds: 10
+
+          livenessProbe:
+            tcpSocket:
+              port: 9092
+            initialDelaySeconds: 40
+            periodSeconds: 15
+
 ---
 apiVersion: v1
 kind: Service
