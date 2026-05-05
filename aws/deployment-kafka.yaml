@@ -20,47 +20,38 @@ spec:
       containers:
         - name: redpanda
           image: docker.io/redpandadata/redpanda:v23.2.15
-          imagePullPolicy: Always
+
+          args:
+            - redpanda
+            - start
+            - --overprovisioned
+            - --smp=1
+            - --memory=256M
+            - --reserve-memory=0M
+            - --node-id=0
+            - --check=false
 
           ports:
             - containerPort: 9092
 
-          command:
-            - redpanda
-            - start
-            - --overprovisioned
-            - --smp
-            - "1"
-            - --memory
-            - "256M"
-            - --reserve-memory
-            - "0M"
-            - --node-id
-            - "0"
-            - --check=false
-            - --kafka-addr
-            - PLAINTEXT://0.0.0.0:9092
-            - --advertise-kafka-addr
-            - PLAINTEXT://kafka:9092
-
           resources:
             requests:
-              memory: "128Mi"
+              memory: "256Mi"
               cpu: "100m"
             limits:
-              memory: "256Mi"
+              memory: "512Mi"
               cpu: "300m"
 
           readinessProbe:
             tcpSocket:
               port: 9092
-            initialDelaySeconds: 20
+            initialDelaySeconds: 30
             periodSeconds: 10
 
           livenessProbe:
             tcpSocket:
               port: 9092
-            initialDelaySeconds: 40
+            initialDelaySeconds: 60
             periodSeconds: 15
 
 ---
