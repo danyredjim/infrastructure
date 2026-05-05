@@ -14,10 +14,11 @@ spec:
     spec:
       containers:
         - name: kafka
-          image: bitnami/kafka:3.6.1
+          image: bitnami/kafka:3.5.1-debian-11-r0
           imagePullPolicy: Always
           ports:
             - containerPort: 9092
+
           env:
             - name: KAFKA_ENABLE_KRAFT
               value: "yes"
